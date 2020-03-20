@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">BMInfo</string>
+    <!-- Menu Items -->
+    <string name="action_metric">Metric Mode</string>
+    <string name="action_imperial">Imperial Mode</string>
+    <string name="action_aboutAuthor">About the Author</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">Calculator</string>
+    <string name="second_fragment_label">BMI Info</string>
+    <string name="button_text_calculate">Calculate</string>
+    <string name="previous">Previous</string>
+
+    <string name="label_heightMetric">Height in cm</string>
+    <string name="label_weightMetric">Weight in kg</string>
+    <string name="label_heightImperial">Height in inches</string>
+    <string name="label_weightImperial">Weight in lbs</string>
+    <string name="label_bmi">BMI</string>
+    <string name="calculated_bmi">XX.XX</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+</resources>
