@@ -19,6 +19,14 @@
     for the laboratory course mobile and multimedia systems at Politechnika Wroclawska.
     </string>
 
+    <!-- BMI Info -->
+    <string name="text_bmi">Your BMI is</string>
+    <string name="text_severelyUnderweight">That means you are severely underweight. Please consult a doctor.</string>
+    <string name="text_underweight">That means you are underweight. Maybe eat more.</string>
+    <string name="text_normal">That means your BMI is in the normal range, congratulations.</string>
+    <string name="text_ovrweight">That means you are overweight. Eat less and exercise.</string>
+    <string name="text_severelyOverweight">That means you are severely overweight. Please consult a doctor.</string>
+
 
     <!-- Formattable Strings and Error Messages -->
     <string name="float2decimals">%.2f</string>

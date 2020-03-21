@@ -12,6 +12,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
+import org.w3c.dom.Text
 
 
 class MainActivity : AppCompatActivity() {
@@ -24,12 +25,25 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
+        // On click listenes for BMI calculate button
         findViewById<Button>(R.id.button_first).setOnClickListener {
             updateBMI()
 
             // Hide virtual keyboard
             findViewById<EditText>(R.id.edit_height).onEditorAction(EditorInfo.IME_ACTION_DONE)
             findViewById<EditText>(R.id.edit_weight).onEditorAction(EditorInfo.IME_ACTION_DONE)
+        }
+
+        // On click listener for BMI value
+        findViewById<TextView>(R.id.calculated_bmi).setOnClickListener {
+            if(bmiHandler.BMI > 0) {
+                val intent = Intent(this, BmiInfo::class.java)
+                // To pass any data to next activity
+                intent.putExtra("bmi", bmiHandler.BMI)
+                intent.putExtra("class", bmiHandler.classification)
+                // start your next activity
+                startActivity(intent)
+            }
         }
     }
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -53,9 +67,6 @@ class MainActivity : AppCompatActivity() {
             }
             R.id.action_aboutAuthor -> {
                 val intent = Intent(this, AuthorActivity::class.java)
-                // To pass any data to next activity
-                //intent.putExtra("keyIdentifier", value)
-                // start your next activity
                 startActivity(intent)
                 return true
             }
