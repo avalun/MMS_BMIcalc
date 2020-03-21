@@ -1,9 +1,8 @@
 package com.example.mms_bmicalc
 
-import android.graphics.Color
+import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
-import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import android.view.inputmethod.EditorInfo
@@ -11,13 +10,13 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
-
+import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlin.math.pow
+
 
 class MainActivity : AppCompatActivity() {
 
-    private val ORANGE = Color.rgb(255,140,0)
+    private var bmiHandler = BmiHandler()
     private var isImperial = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,7 +25,7 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
         findViewById<Button>(R.id.button_first).setOnClickListener {
-            calculateAndUpdateBMI()
+            updateBMI()
 
             // Hide virtual keyboard
             findViewById<EditText>(R.id.edit_height).onEditorAction(EditorInfo.IME_ACTION_DONE)
@@ -53,24 +52,16 @@ class MainActivity : AppCompatActivity() {
                 return true
             }
             R.id.action_aboutAuthor -> {
+                val intent = Intent(this, AuthorActivity::class.java)
+                // To pass any data to next activity
+                //intent.putExtra("keyIdentifier", value)
+                // start your next activity
+                startActivity(intent)
                 return true
             }
             else -> super.onOptionsItemSelected(item)
         }
     }
-
-    /*override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        // Button: Calculate BMI
-        view.findViewById<Button>(R.id.button_first).setOnClickListener {
-            calculateAndUpdateBMI(view)
-
-            // Hide virtual keyboard
-            view.findViewById<EditText>(R.id.edit_height).onEditorAction(EditorInfo.IME_ACTION_DONE);
-            view.findViewById<EditText>(R.id.edit_weight).onEditorAction(EditorInfo.IME_ACTION_DONE);
-        }
-    }*/
 
     private fun assertHeight(height: Float): Boolean {
         val minHeight = if (isImperial) 40f else 100f
@@ -98,29 +89,8 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
-    // Takes bmi, evaluates it and returns:
-    // Green if everything is okay
-    // Orange if you are close to being at risk
-    // Red if you are at risk
-    // Data taken from the table found on https://en.wikipedia.org/wiki/Body_mass_index#Categories
-    private fun lookupBMI(bmi: Float):Int {
-        // Lookup values for bmi
-        val severelyUnderweight = 0.0..16.0
-        val underweight = 16.0..18.5
-        val overweight = 25.0..30.0
-        val severelyOverweight = 30.0..100.0
-
-        if(bmi in severelyOverweight || bmi in severelyUnderweight){
-            return Color.RED
-        }
-        if (bmi in overweight || bmi in underweight){
-            return ORANGE
-        }
-        // Else weight is in normal range
-        return Color.GREEN
-    }
-
-    private fun calculateAndUpdateBMI() {
+    private fun updateBMI() {
+        // Get values of text fields
         val editHeightText = findViewById<EditText>(R.id.edit_height).text.toString()
         val editWeightText = findViewById<EditText>(R.id.edit_weight).text.toString()
 
@@ -130,18 +100,17 @@ class MainActivity : AppCompatActivity() {
             return
         }
 
+        // Cast to float for further usage
         val height = editHeightText.toFloat()
         val weight = editWeightText.toFloat()
 
-        // Check if supplied values are valid
+        // Check if supplied values are in valid range
         if(assertHeight(height) && assertWeight(weight)){
-            // Calculate BMI - 703 is a conversion factor when using imperial units
-            val bmi = if(isImperial) 703 * weight / height.pow(2)
-            else weight / (height/100f).pow(2)
-
             // Set text to display BMI
-            findViewById<TextView>(R.id.calculated_bmi).text = getString(R.string.float2decimals).format(bmi)
-            findViewById<TextView>(R.id.calculated_bmi).setTextColor(lookupBMI(bmi))
+            findViewById<TextView>(R.id.calculated_bmi).text = getString(R.string.float2decimals).format(
+                bmiHandler.calculate(height, weight, isImperial))
+            // With the appropriate color
+            findViewById<TextView>(R.id.calculated_bmi).setTextColor(bmiHandler.colorBMI())
         }
     }
 

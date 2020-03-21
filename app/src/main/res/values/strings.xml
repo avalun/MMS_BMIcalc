@@ -14,6 +14,12 @@
     <string name="label_bmi">BMI</string>
     <string name="calculated_bmi">XX.XX</string>
 
+    <!-- About the author -->
+    <string name="text_author">The author of this app is Patrick Hein.\n The app has been created
+    for the laboratory course mobile and multimedia systems at Politechnika Wroclawska.
+    </string>
+
+
     <!-- Formattable Strings and Error Messages -->
     <string name="float2decimals">%.2f</string>
     <string name="errormsg_emptyFields">Fields cannot be empty!</string>
